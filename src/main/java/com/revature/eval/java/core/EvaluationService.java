@@ -1,5 +1,7 @@
 package com.revature.eval.java.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +16,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String[] splitWords = phrase.split("[ \\-]");
+		String acronym = "";
+		int i;
+		for(i=0;i<splitWords.length;i++) {
+			acronym=acronym+splitWords[i].charAt(0);
+		}
+		acronym=acronym.toUpperCase();
+		System.out.println(acronym);
+		return acronym;
 	}
 
 	/**
@@ -34,8 +43,39 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		string=string.toUpperCase();
+		int points=0, i;
+		for (i=0;i<string.length();i++) {
+			switch(string.charAt(i)) {
+				case 'A':;
+				case 'E':;
+				case 'I':;
+				case 'O':;
+				case 'U':;
+				case 'L':;
+				case 'N':;
+				case 'R':;
+				case 'S':;
+				case 'T': points = points+1; break;
+				case 'D':;
+				case 'G': points = points+2; break;
+				case 'B':;
+				case 'C':;
+				case 'M':;
+				case 'P': points = points+3; break;
+				case 'F':;
+				case 'H':;
+				case 'V':;
+				case 'W':;
+				case 'Y': points = points+4; break;
+				case 'K': points = points+5; break;
+				case 'J':;
+				case 'X': points = points+8; break;
+				case 'Q':;
+				case 'Z': points = points+10; break;
+			}
+		}
+		return points;
 	}
 
 	/**
@@ -68,10 +108,39 @@ public class EvaluationService {
 	 * 
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
+	 * @throws Exception 
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		StringBuffer auxstring = new StringBuffer();
+		auxstring.append(string);
+		int i;
+		for(i=0;i<auxstring.length();i++) {
+			if(i==0||i==4) {
+				//Put code here for when i=0. I'm simply checking for numbers that aren't 2 thru 0
+				while(i < auxstring.length()) {
+					if (auxstring.charAt(i)<'2'||auxstring.charAt(i)>'9') {
+						auxstring.deleteCharAt(i);
+					} else {
+						break;
+					}
+				}					
+			} else {
+				while(i < auxstring.length()) {
+					//Check for numbers 0 thru 9 in every digit until done and remove anything that's not that
+					if (auxstring.charAt(i)<'0'||auxstring.charAt(i)>'9') {
+						auxstring.deleteCharAt(i);
+					} else {
+						break;
+					}
+				}
+			}
+		}
+		//Remember to check for wrong number of characters
+		if (auxstring.length() != 10) {
+			throw new IllegalArgumentException();
+		}
+		string = auxstring.toString();
+		return string;
 	}
 
 	/**
@@ -84,8 +153,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		/* Plan: 
+		 * 1. Take string and split it.
+		 * 2. Enter each split string into hashmap (arraylist? or something else?)
+		 * 3. Run a double loop, one for every split string and one for going through hash map on each string
+		 * 	-When a string is chosen from first loop, compare it to every element in map and increment a conditional equality counter
+		 *  -Each time the nested loop (goes thru map) completes, store the COUNTER as a string with the split strings as KEYS (after nested loop, inside outer loop)
+		 *  -for each storage, use the "putIfAbsent" method
+		 * 4. We'll check from here, but EvalServTest class has string as key and integer as value, just like we're doing.  We just need to make sure to match the order.
+		 */
+		//Order is Map<Key, Value>
+		
+		Map<String, Integer> wordStorage = new HashMap<>();
+		String[] splitWords = string.split("[ ,\n]");
+		
+		for (int i=0; i < splitWords.length; i++) {
+			int counter = 0;
+			for (int j = 0; j < splitWords.length; j++) {
+				if (splitWords[i].equalsIgnoreCase(splitWords[j])) {
+					counter++;
+				}
+			}
+			wordStorage.putIfAbsent(splitWords[i], counter);
+		}
+		wordStorage.remove("");
+		return wordStorage;
 	}
 
 	/**
@@ -127,8 +219,12 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			for(int i=0; i<sortedList.size(); i++) {
+				if(sortedList.get(i).equals(t)) {
+					return i;
+				}
+			}
+			return -1;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -162,8 +258,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		List<Integer> digitList = new ArrayList<>();
+		int digits = input, armstrongNumber = 0;
+		for ( ; digits > 0; ) {
+			digitList.add((digits%10));
+			digits /= 10;
+		}
+		
+		for (int i = 0; i < digitList.size(); i++) {
+			armstrongNumber += Math.pow(digitList.get(i), digitList.size()); 
+		}
+		
+		return armstrongNumber == input;
 	}
 
 	/**
@@ -177,6 +283,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
+		
+		//First check if value of long is greater than 1.  If not, return null.
+		//Run nested loop
+		//Run loop where I % numbers from 2 to the number. At 
 		// TODO Write an implementation for this method declaration
 		return null;
 	}
