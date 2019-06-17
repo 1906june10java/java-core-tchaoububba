@@ -284,11 +284,32 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		
-		//First check if value of long is greater than 1.  If not, return null.
-		//Run nested loop
-		//Run loop where I % numbers from 2 to the number. At 
-		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> factorList = new ArrayList<>();
+		
+		//Run nested loop use for loop on the outside for progressing through factors
+		//If counter is ever more than 1, cut the inner loop
+		
+		int counter = 0, investigatedNumber = (int)l;
+		for (int i = 2; i <= investigatedNumber; i++) {
+			if ((investigatedNumber % i) == 0) {
+				for (int j = 2; j <= i; j++) {
+					if ((i % j) == 0) {
+						counter++;
+						if (counter > 1) {
+							counter = 0;
+							break;
+						} else if (i == j) {
+							factorList.add((long)i);
+							investigatedNumber /= i;
+							counter = 0;
+							i = 1;
+							break;
+						}
+					}
+				}
+			}	
+		}
+		return factorList;
 	}
 
 
