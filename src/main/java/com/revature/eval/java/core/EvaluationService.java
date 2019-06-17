@@ -346,8 +346,37 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			StringBuffer auxPhrase = new StringBuffer();
+			String[] splitWords = string.split("[\\.\\,\\s+]");
+			String phrase = "";
+			int i, counter = 0, auxChar = 'a';
+			for(i=0; i < splitWords.length; i++) {
+				phrase=phrase+splitWords[i];
+			}
+			phrase=phrase.toLowerCase();
+			auxPhrase.append(phrase);
+			
+			for (i = 0; i < auxPhrase.length(); i++) {
+				
+				if (auxPhrase.charAt(i) <= 'z' && phrase.charAt(i) >= 'a') {
+					auxChar = phrase.charAt(i);
+					auxChar = 'z' - auxChar + 'a';
+					auxPhrase.setCharAt(i, (char)auxChar);
+				}
+			}
+			
+			for (i = 0; i < auxPhrase.length(); i++) {
+				if (counter == 5) {
+					auxPhrase.insert(i, " ");
+					counter = 0;
+					i++;
+				}
+				counter++;
+			}
+			
+			
+			string = auxPhrase.toString();
+			return string;
 		}
 
 		/**
@@ -357,8 +386,28 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			StringBuffer auxPhrase = new StringBuffer();
+			String[] splitWords = string.split("[\\.\\,\\s+]");
+			String phrase = "";
+			int i, counter = 0, auxChar = 'a';
+			for(i=0; i < splitWords.length; i++) {
+				phrase=phrase+splitWords[i];
+			}
+			phrase=phrase.toLowerCase();
+			auxPhrase.append(phrase);
+			
+			for (i = 0; i < auxPhrase.length(); i++) {
+				
+				if (auxPhrase.charAt(i) <= 'z' && phrase.charAt(i) >= 'a') {
+					auxChar = phrase.charAt(i);
+					auxChar = 'z' - auxChar + 'a';
+					auxPhrase.setCharAt(i, (char)auxChar);
+				}
+			}
+			
+			string = auxPhrase.toString();
+			
+			return string;
 		}
 	}
 
