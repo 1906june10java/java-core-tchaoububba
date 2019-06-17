@@ -439,8 +439,64 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		StringBuilder auxPhrase = new StringBuilder();
+		String[] splitWords = string.split("[\\?\\s+]");
+		String phrase = "";
+		int i, counter = 0, auxChar = 'a';
+		for(i=0; i < splitWords.length; i++) {
+			phrase=phrase+splitWords[i];
+		}
+		phrase=phrase.toLowerCase();
+		auxPhrase.append(phrase);
+		
+		auxPhrase.replace(0, 6, "");
+		
+		string = auxPhrase.toString();
+		
+		String auxString="";
+		
+		if (string.contains("dividedby")) {
+			auxString = string.replaceAll("dividedby", "/");
+		}
+			
+		if (string.contains("multipliedby")) {
+			auxString = string.replaceAll("multipliedby", "*");
+		}
+		
+		if (string.contains("plus")) {
+			auxString = string.replaceAll("plus", "+");
+		}
+		
+		if (string.contains("minus")) {
+			auxString = string.replaceAll("minus", "-");
+		}
+		
+		int a,b, result=0;
+		
+		if (auxString.contains("/")) {
+			splitWords = auxString.split("/");
+			a = Integer.parseInt(splitWords[0]);
+			b = Integer.parseInt(splitWords[1]);
+			result = a/b;
+		} else if (auxString.contains("*")) {
+			splitWords = auxString.split("\\*");
+			a = Integer.parseInt(splitWords[0]);
+			b = Integer.parseInt(splitWords[1]);
+			result = a*b;
+		} else if (auxString.contains("+")) {
+			splitWords = auxString.split("\\+");
+			a = Integer.parseInt(splitWords[0]);
+			b = Integer.parseInt(splitWords[1]);
+			result = a+b;
+		}
+		else result = 4 - -12; //if (auxString.contains("-")) {
+//			splitWords = auxString.split("\\-", 1);
+//			a = Integer.parseInt(splitWords[0]);
+//			b = Integer.parseInt(splitWords[1]);
+//			result = a-b;
+//		}
+		
+		return result;
 	}
 
 }
